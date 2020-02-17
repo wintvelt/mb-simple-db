@@ -1,0 +1,11 @@
+{
+    "body": [{
+        "id": "1",
+        "data": "full write"
+    }],
+    "path": "/",
+    "pathParameters": {
+        "filename": "test.json"
+    },
+    "httpMethod": "POST"
+}

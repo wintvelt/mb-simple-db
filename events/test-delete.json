@@ -1,0 +1,7 @@
+{
+    "path": "/",
+    "pathParameters": {
+        "filename": "test.json"
+    },
+    "httpMethod": "DELETE"
+}

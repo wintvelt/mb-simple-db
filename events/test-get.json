@@ -1,0 +1,8 @@
+{
+    "path": "/",
+    "pathParameters": {
+        "filename": "test.json",
+        "id": "12345"
+    },
+    "httpMethod": "GET"
+}

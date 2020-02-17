@@ -1,0 +1,56 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'sam-simple-db
+
+  Simple API for storing and retrieving json data on S3
+
+  '
+Globals:
+  Function:
+    Timeout: 3
+Metadata:
+  AWS::ServerlessRepo::Application:
+    Name: sam-simple-db
+    Description: Function to store and retrieve simple data
+    Author: Wouter
+    License: license.txt
+    ReadmeUrl: s3://moblybird-store/479b4df75d41005db66378d62fdcea6c
+    Labels:
+    - Simple
+    - Database
+    SemanticVersion: 0.0.1
+Resources:
+  SimpleDbFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://moblybird-store/215dc8bded0d6071bdc90372bc4a329b
+      Handler: app.lambdaHandler
+      Runtime: nodejs12.x
+      Events:
+        Endpoint1:
+          Type: Api
+          Properties:
+            Path: /simpledb/{filename}/{id}
+            Method: any
+        Endpoint2:
+          Type: Api
+          Properties:
+            Path: /simpledb/{filename}
+            Method: any
+Outputs:
+  SimpleDbApi:
+    Description: API Gateway endpoint URL for Prod stage for SimpleDb function
+    Value:
+      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/simpledb/
+  SimpleDbFunction:
+    Description: SimpleDb Lambda Function ARN
+    Value:
+      Fn::GetAtt:
+      - SimpleDbFunction
+      - Arn
+  SimpleDbFunctionIamRole:
+    Description: Implicit IAM Role created for SimpleDb function
+    Value:
+      Fn::GetAtt:
+      - SimpleDbFunctionRole
+      - Arn

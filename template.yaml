@@ -1,0 +1,54 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  sam-simple-db
+
+  Simple API for storing and retrieving json data on S3
+  
+Globals:
+  Function:
+    Timeout: 3
+
+Metadata:
+  AWS::ServerlessRepo::Application:
+    Name: sam-simple-db
+    Description: Function to store and retrieve simple data
+    Author: Wouter
+    License: license.txt
+    ReadmeUrl: README.md
+    Labels: ['Simple', 'Database']
+    SemanticVersion: 0.0.1
+    
+
+Resources:
+  SimpleDbFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: sam-simple-db/
+      Handler: app.lambdaHandler
+      Runtime: nodejs12.x
+      Events:
+        Endpoint1:
+          Type: Api
+          Properties:
+            Path: /simpledb/{filename}/{id}
+            Method: any
+        Endpoint2:
+          Type: Api
+          Properties:
+            Path: /simpledb/{filename}
+            Method: any
+    
+Outputs:
+  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
+  # Find out more about other implicit resources you can reference within SAM
+  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+  SimpleDbApi:
+    Description: "API Gateway endpoint URL for Prod stage for SimpleDb function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/simpledb/"
+  SimpleDbFunction:
+    Description: "SimpleDb Lambda Function ARN"
+    Value: !GetAtt SimpleDbFunction.Arn
+  SimpleDbFunctionIamRole:
+    Description: "Implicit IAM Role created for SimpleDb function"
+    Value: !GetAtt SimpleDbFunctionRole.Arn
