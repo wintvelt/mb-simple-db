@@ -1,6 +1,6 @@
 // Read and write files on S3
 var { S3 } = require('aws-sdk');
-const { secretID, secretKey, bucketName } = require('./SECRETS');
+const { secretID, secretKey, bucketName, internalFolder } = require('./SECRETS');
 const { response } = require('./helpers-api');
 
 
@@ -18,7 +18,7 @@ exports.fileHandler = function (event) {
             if (!event.queryStringParameters || !event.queryStringParameters.filename) return response(400, 'Bad request');
             const getParams = {
                 Bucket: bucketName,
-                Key: decodeURI(event.queryStringParameters.filename)
+                Key: internalFolder + '/' + decodeURI(event.queryStringParameters.filename)
             }
             return getPromise(getParams)
                 .then(data => {
@@ -33,7 +33,7 @@ exports.fileHandler = function (event) {
             if (!postBody.filename || !postBody.data) return response(400, 'Bad request');
             const postParams = {
                 Bucket: bucketName,
-                Key: postBody.filename,
+                Key: internalFolder + '/' + postBody.filename,
                 Body: JSON.stringify(postBody.data),
                 ContentType: 'application/json'
             }
@@ -50,7 +50,7 @@ exports.fileHandler = function (event) {
             if (!delBody.filename) return response(400, 'Bad request');
             const delParams = {
                 Bucket: bucketName,
-                Key: delBody.filename
+                Key: internalFolder + '/' + delBody.filename
             }
             return deletePromise(delParams)
                 .then(data => response(200, data))
@@ -105,7 +105,7 @@ const deletePromise = function (params) {
 }
 
 // File promise that always resolves (empty file returns [])
-exports.getFile = function(fileName, bucket) {
+exports.getFile = function (fileName, bucket) {
     return getPromise({ Bucket: bucket, Key: fileName })
         .then(data => {
             const buffer = Buffer.from(data.Body);
@@ -117,7 +117,7 @@ exports.getFile = function(fileName, bucket) {
 }
 
 // File promise that always resolves (empty file returns [])
-exports.getFileWithDate = function(fileName, bucket) {
+exports.getFileWithDate = function (fileName, bucket) {
     return getPromise({ Bucket: bucket, Key: fileName })
         .then(data => {
             const buffer = Buffer.from(data.Body);

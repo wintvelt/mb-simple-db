@@ -1,6 +1,6 @@
 const { response } = require('./src/helpers-api');
 const { putPromise, getFile, deletePromise } = require('./src/s3functions');
-const { bucketName } = require('./src/SECRETS');
+const { bucketName, internalFolder } = require('./src/SECRETS');
 
 exports.lambdaHandler = async (event) => {
     const { filename, id } = event.pathParameters;
@@ -8,7 +8,7 @@ exports.lambdaHandler = async (event) => {
     switch (event.httpMethod) {
         case 'POST': {
             const data = event.body;
-            const oldFile = await getFile(filename, bucketName);
+            const oldFile = await getFile(internalFolder + '/' + filename, bucketName);
             const oldHasid = oldFile.find(it => it.id === id);
             const newFile = requestHasId ?
                 oldHasid ?
@@ -17,33 +17,33 @@ exports.lambdaHandler = async (event) => {
                 : data;
             const output = await putPromise({
                 Bucket: bucketName,
-                Key: filename,
+                Key: internalFolder + '/' + filename,
                 Body: JSON.stringify(newFile),
                 ContentType: 'application/json'
             });
             return response(200, output);
         }
         case 'GET': {
-            const getResult = await getFile(filename, bucketName);
+            const getResult = await getFile(internalFolder + '/' + filename, bucketName);
             const output = requestHasId ?
                 getResult.find(it => it.id === id)
                 : getResult
             return response(200, output);
         }
         case 'DELETE': {
-            const oldFile = await getFile(filename, bucketName);
+            const oldFile = await getFile(internalFolder+'/'+filename, bucketName);
             const newFile = oldFile.filter(it => it.id !== id);
             const hasNewFile = newFile && newFile.length > 0;
             const writeResult = (requestHasId && hasNewFile) ?
                 await putPromise({
                     Bucket: bucketName,
-                    Key: filename,
+                    Key: internalFolder + '/' + filename,
                     Body: JSON.stringify(newFile),
                     ContentType: 'application/json'
                 })
                 : await deletePromise({
                     Bucket: bucketName,
-                    Key: filename
+                    Key: internalFolder + '/' + filename
                 });
             return response(200, writeResult);
         }

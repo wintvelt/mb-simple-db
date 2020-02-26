@@ -11,7 +11,7 @@ Globals:
 
 Metadata:
   AWS::ServerlessRepo::Application:
-    Name: sam-simple-db
+    Name: moblybird-simple-db
     Description: Function to store and retrieve simple data
     Author: Wouter
     License: license.txt
@@ -21,10 +21,10 @@ Metadata:
     
 
 Resources:
-  SimpleDbFunction:
+  MoblybirdSimpleDbFunction:
     Type: AWS::Serverless::Function 
     Properties:
-      CodeUri: sam-simple-db/
+      CodeUri: moblybird-simple-db/
       Handler: app.lambdaHandler
       Runtime: nodejs12.x
       Events:
@@ -43,12 +43,12 @@ Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
   # Find out more about other implicit resources you can reference within SAM
   # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
-  SimpleDbApi:
-    Description: "API Gateway endpoint URL for Prod stage for SimpleDb function"
+  MoblybirdSimpleDbApi:
+    Description: "API Gateway endpoint URL for Prod stage for MoblybirdSimpleDbFunction function"
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/simpledb/"
-  SimpleDbFunction:
-    Description: "SimpleDb Lambda Function ARN"
-    Value: !GetAtt SimpleDbFunction.Arn
-  SimpleDbFunctionIamRole:
-    Description: "Implicit IAM Role created for SimpleDb function"
-    Value: !GetAtt SimpleDbFunctionRole.Arn
+  MoblybirdSimpleDbFunction:
+    Description: "MoblybirdSimpleDb Lambda Function ARN"
+    Value: !GetAtt MoblybirdSimpleDbFunction.Arn
+  MoblybirdSimpleDbFunctionIamRole:
+    Description: "Implicit IAM Role created for MoblybirdSimpleDb function"
+    Value: !GetAtt MoblybirdSimpleDbFunctionRole.Arn
