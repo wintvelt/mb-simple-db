@@ -56,6 +56,9 @@ exports.fileHandler = function (event) {
                 .then(data => response(200, data))
                 .catch(err => response(500, 'server error-thing'));
 
+        case 'OPTIONS':
+            return response(200, 'ok');
+            
         default:
             return response(405, 'not allowed');
     }

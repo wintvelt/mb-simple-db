@@ -24,7 +24,7 @@ Resources:
   MoblybirdSimpleDbFunction:
     Type: AWS::Serverless::Function 
     Properties:
-      CodeUri: moblybird-simple-db/
+      CodeUri: sam-simple-db/
       Handler: app.lambdaHandler
       Runtime: nodejs12.x
       Events:
