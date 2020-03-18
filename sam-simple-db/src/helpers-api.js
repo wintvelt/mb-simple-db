@@ -1,3 +1,4 @@
+'use strict';
 exports.response = function (code, message) {
     var msg;
     if (typeof message === 'string') {

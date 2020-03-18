@@ -1,5 +1,4 @@
 'use strict';
-
 const app = require('../../app.js');
 const chai = require('chai');
 const expect = chai.expect;

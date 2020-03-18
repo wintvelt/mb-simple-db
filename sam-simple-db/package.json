@@ -1,5 +1,4 @@
 {
-  "type": "module",
   "name": "sam-simple-db",
   "version": "1.0.0",
   "description": "Simple DB for fetching and storing json from frontend",

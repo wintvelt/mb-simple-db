@@ -1,4 +1,5 @@
 // Read and write files on S3
+'use strict';
 var { S3 } = require('aws-sdk');
 const { secretID, secretKey, bucketName, internalFolder } = require('./SECRETS');
 const { response } = require('./helpers-api');

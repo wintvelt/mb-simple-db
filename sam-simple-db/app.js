@@ -1,3 +1,4 @@
+'use strict';
 const { response } = require('./src/helpers-api');
 const { putPromise, getFile, deletePromise } = require('./src/s3functions');
 const { bucketName, internalFolder } = require('./src/SECRETS');
